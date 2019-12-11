@@ -19,9 +19,6 @@
 %define _lto_cflags %{nil}
 %define soname  155
 %define svn     20190201
-%bcond_without  gpac
-##### WARNING: please do not edit this auto generated spec file. Use the libx264.spec! #####
-%bcond_without  x264_binary
 Name:           libx264-x264
 Version:        0.%{soname}svn%{svn}
 Release:        2.7
@@ -32,20 +29,15 @@ Url:            http://www.videolan.org/developers/x264.html
 Source:         ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-%{svn}-2245-stable.tar.bz2
 Patch0:         x264-use-shared-library.patch
 Patch1:         0001-cli-Fix-linking-with-system-libx264-on-x86.patch
-BuildRequires:  nasm >= 2.13
-BuildRequires:  pkgconfig
-BuildRequires:  yasm >= 1.2.0
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-%if %{with x264_binary}
-%if %{with gpac}
-BuildRequires:  libgpac-devel
-%endif
+BuildRequires:  nasm
+BuildRequires:  pkg-config
+BuildRequires:  yasm
 BuildRequires:  pkgconfig(ffms2)
 BuildRequires:  pkgconfig(libavcodec)
 BuildRequires:  pkgconfig(libavformat)
 BuildRequires:  pkgconfig(libavutil)
 BuildRequires:  pkgconfig(libswscale)
-%endif
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
