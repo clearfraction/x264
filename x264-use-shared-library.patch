@@ -1,0 +1,23 @@
+Index: x264-snapshot-20160430-2245-stable/Makefile
+===================================================================
+--- x264-snapshot-20160430-2245-stable.orig/Makefile
++++ x264-snapshot-20160430-2245-stable/Makefile
+@@ -190,6 +190,7 @@ $(LIBX264): $(GENERATED) .depend $(OBJS)
+ 
+ $(SONAME): $(GENERATED) .depend $(OBJS) $(OBJASM) $(OBJSO)
+ 	$(LD)$@ $(OBJS) $(OBJASM) $(OBJSO) $(SOFLAGS) $(LDFLAGS)
++	ln -s $(SONAME) libx264.so
+ 
+ ifneq ($(EXE),)
+ .PHONY: x264 checkasm8 checkasm10 example
+@@ -198,8 +199,8 @@ checkasm: checkasm$(EXE)
+ example: example$(EXE)
+ endif
+ 
+-x264$(EXE): $(GENERATED) .depend $(OBJCLI) $(CLI_LIBX264)
+-	$(LD)$@ $(OBJCLI) $(CLI_LIBX264) $(LDFLAGSCLI) $(LDFLAGS)
++x264$(EXE): $(GENERATED) .depend $(OBJCLI) $(SONAME)
++	$(LD)$@ $(OBJCLI) -L. -lx264 $(LDFLAGSCLI) $(LDFLAGS)
+ 
+ checkasm8$(EXE): $(GENERATED) .depend $(OBJCHK) $(OBJCHK_8) $(LIBX264)
+ 	$(LD)$@ $(OBJCHK) $(OBJCHK_8) $(LIBX264) $(LDFLAGS)
