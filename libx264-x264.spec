@@ -109,7 +109,7 @@ development with libx264. This library is needed to build
 mplayer/mencoder with H264 encoding support.
 
 %prep
-%autosetup -p1 -n x264-snapshot-%{svn}-2245-stable
+%setup -p1 -n x264-snapshot-%{svn}-2245-stable
 
 %build
 FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -119,42 +119,25 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
   --disable-lsmash \
   --disable-opencl \
   --enable-shared \
-%if %{with x264_binary}
   --enable-swscale \
   --enable-lavf \
   --enable-ffms \
-%if %{with gpac}
-  --enable-gpac \
-%else
   --disable-gpac \
-%endif
-%else
-  --disable-cli \
-  --disable-swscale \
-  --disable-lavf \
-  --disable-ffms \
-  --disable-gpac \
-%endif
   --enable-pic
 make %{?_smp_mflags}
 
 %install
-%if %{with x264_binary}
 install -Dm 755 x264 %{buildroot}/%{_bindir}/x264
-%else
-make %{?_smp_mflags} DESTDIR=%{buildroot} install
 
 rm -f %{buildroot}%{_libdir}/%{name}.so
 rm -f %{buildroot}%{_libdir}/%{name}.a
 ln -s %{name}.so.%{soname} %{buildroot}%{_libdir}/%{name}.so
 %endif
 
-%if %{with x264_binary}
 %files -n x264
 %defattr(-,root,root)
 %doc doc/*.txt
 %attr(0755,root,root) %{_bindir}/x264
-%else
 
 %post -n %{name}-%{soname} -p /sbin/ldconfig
 %postun -n %{name}-%{soname} -p /sbin/ldconfig
