@@ -109,7 +109,8 @@ development with libx264. This library is needed to build
 mplayer/mencoder with H264 encoding support.
 
 %prep
-%setup -p1 -n x264-snapshot-%{svn}-2245-stable
+%setup -n x264-snapshot-%{svn}-2245-stable
+%patch1 -p1
 
 %build
 FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
