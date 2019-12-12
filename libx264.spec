@@ -26,7 +26,7 @@ Summary:        A free h264/avc encoder - encoder binary
 License:        GPL-2.0+
 Group:          Productivity/Multimedia/Video/Editors and Convertors
 Url:            http://www.videolan.org/developers/x264.html
-#Source:         ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-%{svn}-2245-stable.tar.bz2
+# Source:        ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-%%{svn}-2245-stable.tar.bz2
 Source:         https://0x0.st/zUYo.bz2
 Patch0:         x264-use-shared-library.patch
 Patch1:         0001-cli-Fix-linking-with-system-libx264-on-x86.patch
