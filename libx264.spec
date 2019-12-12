@@ -33,7 +33,7 @@ BuildRequires:  nasm
 BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-# %%if %{with x264_binary}
+# %%if %%{with x264_binary}
 # BuildRequires:  pkgconfig(ffms2)
 # BuildRequires:  pkgconfig(libavcodec)
 # BuildRequires:  pkgconfig(libavformat)
@@ -122,11 +122,11 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
   --disable-lsmash \
   --disable-opencl \
   --enable-shared \
-# %%if %{with x264_binary}
+# %%if %%{with x264_binary}
 #  --enable-swscale \
 #  --enable-lavf \
 #  --enable-ffms \
-# %%if %{with gpac}
+# %%if %%{with gpac}
 #  --enable-gpac \
 # %%else
   --disable-gpac \
@@ -137,7 +137,7 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
   --disable-lavf \
   --disable-ffms \
   --disable-gpac \
-# %endif
+# %%endif
   --enable-pic
 make %{?_smp_mflags}
 
@@ -152,12 +152,12 @@ rm -f %{buildroot}%{_libdir}/%{name}.a
 ln -s %{name}.so.%{soname} %{buildroot}%{_libdir}/%{name}.so
 # %%endif
 
-# %if %{with x264_binary}
-# %files -n x264
-# %defattr(-,root,root)
-# %doc doc/*.txt
-# %attr(0755,root,root) %{_bindir}/x264
-# %else
+# %%if %%{with x264_binary}
+# %%files -n x264
+# %%defattr(-,root,root)
+# %%doc doc/*.txt
+# %%attr(0755,root,root) %%{_bindir}/x264
+# %%else
 
 %post -n %{name}-%{soname} -p /sbin/ldconfig
 %postun -n %{name}-%{soname} -p /sbin/ldconfig
