@@ -19,8 +19,9 @@
 %define _lto_cflags %{nil}
 %define soname  155
 %define svn     20190201
-%bcond_without  gpac
-%bcond_with     x264_binary
+# %bcond_without  gpac
+# %bcond_with     x264_binary
+
 Name:           libx264
 Version:        0.%{soname}svn%{svn}
 Release:        2.6
@@ -29,23 +30,19 @@ License:        GPL-2.0+
 Group:          Productivity/Multimedia/Video/Editors and Convertors
 Url:            http://www.videolan.org/developers/x264.html
 Source:         ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-%{svn}-2245-stable.tar.bz2
-Source1:        baselibs.conf
 Patch0:         x264-use-shared-library.patch
 Patch1:         0001-cli-Fix-linking-with-system-libx264-on-x86.patch
-BuildRequires:  nasm >= 2.13
-BuildRequires:  pkgconfig
-BuildRequires:  yasm >= 1.2.0
+BuildRequires:  nasm
+BuildRequires:  pkg-config
+BuildRequires:  yasm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-%if %{with x264_binary}
-%if %{with gpac}
-BuildRequires:  libgpac-devel
-%endif
-BuildRequires:  pkgconfig(ffms2)
-BuildRequires:  pkgconfig(libavcodec)
-BuildRequires:  pkgconfig(libavformat)
-BuildRequires:  pkgconfig(libavutil)
-BuildRequires:  pkgconfig(libswscale)
-%endif
+# %if %{with x264_binary}
+# BuildRequires:  pkgconfig(ffms2)
+# BuildRequires:  pkgconfig(libavcodec)
+# BuildRequires:  pkgconfig(libavformat)
+# BuildRequires:  pkgconfig(libavutil)
+# BuildRequires:  pkgconfig(libswscale)
+# %endif
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
@@ -117,7 +114,8 @@ development with libx264. This library is needed to build
 mplayer/mencoder with H264 encoding support.
 
 %prep
-%autosetup -p1 -n x264-snapshot-%{svn}-2245-stable
+%setup -n x264-snapshot-%{svn}-2245-stable
+%patch -p1
 
 %build
 FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
@@ -127,29 +125,29 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
   --disable-lsmash \
   --disable-opencl \
   --enable-shared \
-%if %{with x264_binary}
-  --enable-swscale \
-  --enable-lavf \
-  --enable-ffms \
-%if %{with gpac}
-  --enable-gpac \
-%else
+# %if %{with x264_binary}
+#  --enable-swscale \
+#  --enable-lavf \
+#  --enable-ffms \
+# %if %{with gpac}
+#  --enable-gpac \
+# %else
   --disable-gpac \
-%endif
-%else
+# %endif
+# %else
   --disable-cli \
   --disable-swscale \
   --disable-lavf \
   --disable-ffms \
   --disable-gpac \
-%endif
+# %endif
   --enable-pic
 make %{?_smp_mflags}
 
 %install
-%if %{with x264_binary}
-install -Dm 755 x264 %{buildroot}/%{_bindir}/x264
-%else
+# %if %{with x264_binary}
+# install -Dm 755 x264 %{buildroot}/%{_bindir}/x264
+# %else
 make %{?_smp_mflags} DESTDIR=%{buildroot} install
 
 rm -f %{buildroot}%{_libdir}/%{name}.so
@@ -157,12 +155,12 @@ rm -f %{buildroot}%{_libdir}/%{name}.a
 ln -s %{name}.so.%{soname} %{buildroot}%{_libdir}/%{name}.so
 %endif
 
-%if %{with x264_binary}
-%files -n x264
-%defattr(-,root,root)
-%doc doc/*.txt
-%attr(0755,root,root) %{_bindir}/x264
-%else
+# %if %{with x264_binary}
+# %files -n x264
+# %defattr(-,root,root)
+# %doc doc/*.txt
+# %attr(0755,root,root) %{_bindir}/x264
+# %else
 
 %post -n %{name}-%{soname} -p /sbin/ldconfig
 %postun -n %{name}-%{soname} -p /sbin/ldconfig
@@ -177,7 +175,7 @@ ln -s %{name}.so.%{soname} %{buildroot}%{_libdir}/%{name}.so
 %{_includedir}/x264_config.h
 %{_libdir}/pkgconfig/x264.pc
 %{_libdir}/%{name}.so
-%endif
+# %endif
 
 %changelog
 * Sat Feb  2 2019 antonio.larrosa@gmail.com
