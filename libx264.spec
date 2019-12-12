@@ -113,7 +113,8 @@ mplayer/mencoder with H264 encoding support.
 
 %prep
 %setup -n x264-snapshot-%{svn}-2245-stable
-%patch -p1
+%patch0 -p1
+%patch1 -p1
 
 %build
 FAKE_BUILDDATE=$(LC_ALL=C date -u -r %{_sourcedir}/%{name}.changes '+%%b %%e %%Y')
