@@ -19,9 +19,6 @@
 %define _lto_cflags %{nil}
 %define soname  155
 %define svn     20190201
-# %bcond_without  gpac
-# %bcond_with     x264_binary
-
 Name:           libx264
 Version:        0.%{soname}svn%{svn}
 Release:        2.6
@@ -36,13 +33,13 @@ BuildRequires:  nasm
 BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-# %if %{with x264_binary}
+#%if %{with x264_binary}
 # BuildRequires:  pkgconfig(ffms2)
 # BuildRequires:  pkgconfig(libavcodec)
 # BuildRequires:  pkgconfig(libavformat)
 # BuildRequires:  pkgconfig(libavutil)
 # BuildRequires:  pkgconfig(libswscale)
-# %endif
+#%endif
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
