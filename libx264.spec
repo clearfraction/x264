@@ -122,23 +122,13 @@ mplayer/mencoder with H264 encoding support.
   --disable-lsmash \
   --disable-opencl \
   --enable-shared \
-# %%if %%{with x264_binary}
-#  --enable-swscale \
-#  --enable-lavf \
-#  --enable-ffms \
-# %%if %%{with gpac}
-#  --enable-gpac \
-# %%else
-  --disable-gpac \
-# %%endif
-# %%else
   --disable-cli \
   --disable-swscale \
   --disable-lavf \
   --disable-ffms \
   --disable-gpac \
-# %%endif
   --enable-pic
+  
 make %{?_smp_mflags}
 
 %install
