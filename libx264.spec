@@ -33,13 +33,13 @@ BuildRequires:  nasm
 BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-#%if %{with x264_binary}
+# %%if %{with x264_binary}
 # BuildRequires:  pkgconfig(ffms2)
 # BuildRequires:  pkgconfig(libavcodec)
 # BuildRequires:  pkgconfig(libavformat)
 # BuildRequires:  pkgconfig(libavutil)
 # BuildRequires:  pkgconfig(libswscale)
-#%endif
+# %%endif
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
@@ -122,16 +122,16 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
   --disable-lsmash \
   --disable-opencl \
   --enable-shared \
-# %if %{with x264_binary}
+# %%if %{with x264_binary}
 #  --enable-swscale \
 #  --enable-lavf \
 #  --enable-ffms \
-# %if %{with gpac}
+# %%if %{with gpac}
 #  --enable-gpac \
-# %else
+# %%else
   --disable-gpac \
-# %endif
-# %else
+# %%endif
+# %%else
   --disable-cli \
   --disable-swscale \
   --disable-lavf \
@@ -142,15 +142,15 @@ sed -i "s/__DATE__/\"$FAKE_BUILDDATE\"/" x264.c
 make %{?_smp_mflags}
 
 %install
-# %if %{with x264_binary}
+# %%if %{with x264_binary}
 # install -Dm 755 x264 %{buildroot}/%{_bindir}/x264
-# %else
+# %%else
 make %{?_smp_mflags} DESTDIR=%{buildroot} install
 
 rm -f %{buildroot}%{_libdir}/%{name}.so
 rm -f %{buildroot}%{_libdir}/%{name}.a
 ln -s %{name}.so.%{soname} %{buildroot}%{_libdir}/%{name}.so
-%endif
+# %%endif
 
 # %if %{with x264_binary}
 # %files -n x264
