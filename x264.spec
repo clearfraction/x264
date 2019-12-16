@@ -65,13 +65,13 @@ x264 is a free library for encoding H264/AVC video streams, written from
 scratch.
 
 %package dev
-Summary:        Libraries and include file for the %{name} encoder
-Group:          Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires: 	pkgconfig
-Provides:       x264-dev = %{version}-%{release}
-Provides:	x264-dev = %{epoch}:%{version}-%{release}
-Obsoletes:      x264-dev < %{version}
+Summary:     Libraries and include file for the %{name} encoder
+Group:       Development/Libraries
+Requires:	 %{name}-libs = %{epoch}:%{version}-%{release}
+Requires: 	 pkg-config
+Provides:    x264-dev = %{version}-%{release}
+Provides:	 x264-dev = %{epoch}:%{version}-%{release}
+Obsoletes:   x264-dev < %{version}
 
 %description dev
 x264 is a free library for encoding next-generation H264/AVC video
