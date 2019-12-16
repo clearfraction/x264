@@ -21,8 +21,8 @@ BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRequires:  bc 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Provides:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:	    %{name} = %{epoch}:%{version}-%{release}
+Requires:	    %{name}-libs = %{epoch}:%{version}-%{release}
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
