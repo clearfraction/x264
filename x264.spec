@@ -98,22 +98,29 @@ else
 fi
 
 %build
-
-
-%configure --enable-shared \
-      --enable-pic 
-
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
+export LANG=C.UTF-8
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+%configure --enable-shared --enable-pic 
 make %{?_smp_mflags}
 
 %install
-
   make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-cli
 %if  %{with 10bit_depth}
   install -m 755 %{_builddir}/%{name}-10bit/x264 %{buildroot}/%{_bindir}/x264-10bit
 %endif
 
-  install -dm 755 %{buildroot}/%{_libdir}
-  make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
+install -dm 755 %{buildroot}/%{_libdir}
+make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
 %if  %{with 10bit_depth}
   make -C %{_builddir}/%{name}-10bit DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
 %endif
