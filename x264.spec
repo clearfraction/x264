@@ -1,14 +1,13 @@
-%global api 157
-%global gitdate 20190313
-%global commit0 72db437770fd1ce3961f624dd57a8e75ff65ae0b  
+%global api 160
+%global gitdate 20200615
+%global commit0 4c9b076be684832b9141f5b6c03aaf302adca0e4
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
-# 10bit read here https://gist.github.com/l4n9th4n9/4459997
 
 Name:     x264
 Version:  0.%{api}
-Release:  2%{?gver}%{?dist}
+Release:  %{?gver}%{?dist}
 Epoch:    1
 Summary:  A free h264/avc encoder - encoder binary
 License:  GPLv2
@@ -21,8 +20,8 @@ BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRequires:  bc 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Provides:	    %{name} = %{epoch}:%{version}-%{release}
-Requires:	    %{name}-libs = %{epoch}:%{version}-%{release}
+Provides:       %{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
@@ -111,7 +110,7 @@ export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --enable-shared --enable-pic 
-make %{?_smp_mflags}
+make
 
 %install
   make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-cli
@@ -151,66 +150,4 @@ make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared 
 %endif
 
 %changelog
-
-* Tue Jul 30 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.157-2.git72db437 
-- Rebuilt with the official source to gitlab
-
-* Wed Mar 13 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.157-1.git72db437 
-- Updated to 0.157
-
-* Wed Oct 03 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.155-1.git0a84d98  
-- Updated to 0.155
-- Maintaining compatibility to 8 bits but enabling 10 bits
-
-* Sun May 27 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.152-5.gitba24899  
-- Automatic Mass Rebuild
-
-* Sat Feb 24 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.152-4.gitba24899  
-- Automatic Mass Rebuild
-
-* Wed Dec 06 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.152-3.gitba24899  
-- Automatic Mass Rebuild
-
-* Tue Sep 26 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.152-2.gitba24899
-- Updated to 152-2.gitba24899
-
-* Wed May 24 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 0.148-20.gitd32d7bf
-- Updated to 148-20.gitd32d7bf
-
-* Sun Feb 26 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-18-20170226git90a61ec
-- Rebuilt for bad integrity
-- New changes in sources
-
-* Sun Feb 26 2017 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-17-20170226git90a61ec
-- Updated to 148-17-20170226git90a61ec
-
-* Tue Nov 29 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-7-20161129git72d53ab
-- Legacy support
-- Updated to 0.148-20161129git72d53ab
-
-* Mon Sep 12 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-6-20160906git3f5ed56
-- Added epoch for sub-packages libs and devel
-
-* Tue Sep 06 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-4-20160906git3f5ed56
-- Epoch tag
-
-* Thu Jul 07 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-3-20160707git3f5ed56
-- Updated to 0.148-20160707git3f5ed56
-
-* Wed Apr 20 2016 David Vásquez <davidjeremias82 AT gmail DOT com> 0.148-2-20160420git3b70645
-- Updated to x264-0.148-20160420-3b70645
-- Built x264-10bit
-
-* Sat Feb 20 2016 David Vasquez <davidjeremias82 at gmail dot com> - 0.148-1-20160220gita01e339
-- Updated to 0.148-20160220-a01e339
-
-* Mon Jul 13 2015 David Vasquez <davidjeremias82 at gmail dot com> - 0.146-1-20150713git121396c
-- Upstream
-- Updated to 0.146-20150713git121396c
-- Added git tag in x264-snapshot.sh
-
-* Tue Nov 19 2013 obs@botter.cc
-- add -fno-aggressive-loop-optimizations to extra-cflags in
-  configure for >= 13.1 (specfile), see also
-  https://bugs.launchpad.net/ubuntu/+source/x264/+bug/1241772
-  MAY BE REMOVED on upstream fix
+# based on https://github.com/UnitedRPMs/x264
