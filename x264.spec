@@ -1,13 +1,13 @@
-%global api 160
-%global gitdate 20200615
-%global commit0 4c9b076be684832b9141f5b6c03aaf302adca0e4
+%global api 161
+%global gitdate 20201219
+%global commit0 4121277b40a667665d4eea1726aefdc55d12d110
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 
 Name:     x264
 Version:  0.%{api}
-Release:  %{?gver}%{?dist}
+Release:  %{?gver}
 Epoch:    1
 Summary:  A free h264/avc encoder - encoder binary
 License:  GPLv2
@@ -97,9 +97,6 @@ else
 fi
 
 %build
-export http_proxy=http://127.0.0.1:9/
-export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
@@ -113,16 +110,10 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make
 
 %install
-  make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-cli
-%if  %{with 10bit_depth}
-  install -m 755 %{_builddir}/%{name}-10bit/x264 %{buildroot}/%{_bindir}/x264-10bit
-%endif
-
+make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-cli
 install -dm 755 %{buildroot}/%{_libdir}
 make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
-%if  %{with 10bit_depth}
-  make -C %{_builddir}/%{name}-10bit DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
-%endif
+
 
 %post -p /sbin/ldconfig
 
@@ -131,10 +122,8 @@ make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared 
 %files
 %{_bindir}/x264
 
-
 %files libs
 %{_libdir}/libx264.so.%{api}
-
 
 %files dev
 %defattr(0644,root,root)
