@@ -1,6 +1,6 @@
 %global api 161
-%global gitdate 20201219
-%global commit0 4121277b40a667665d4eea1726aefdc55d12d110
+%global gitdate 20210405
+%global commit0 c347e7a0b476d77674e2c9a6f137f57da026e8fc
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -98,15 +98,16 @@ fi
 
 %build
 export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1616767618
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-%configure --enable-shared --enable-pic 
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+%configure --enable-shared
 make
 
 %install
@@ -118,7 +119,6 @@ make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
-
 %files
 %{_bindir}/x264
 
@@ -131,12 +131,6 @@ make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared 
 %{_includedir}/x264_config.h
 %{_libdir}/pkgconfig/x264.pc
 %{_libdir}/libx264.so
-%if %{with 10bit_depth}
-%{_includedir}/x264-10bit/x264.h
-%{_includedir}/x264-10bit/x264_config.h
-%{_libdir}/x264-10bit/libx264.so
-%{_libdir}/x264-10bit/pkgconfig/x264.pc
-%endif
 
 %changelog
 # based on https://github.com/UnitedRPMs/x264
