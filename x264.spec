@@ -1,6 +1,6 @@
-%global api 161
-%global gitdate 20210405
-%global commit0 c347e7a0b476d77674e2c9a6f137f57da026e8fc
+%global api 163
+%global gitdate 20210613
+%global commit0 ae03d92b52bb7581df2e75d571989cb1ecd19cbd
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -8,12 +8,10 @@
 Name:     x264
 Version:  0.%{api}
 Release:  %{?gver}
-Epoch:    1
 Summary:  A free h264/avc encoder - encoder binary
 License:  GPLv2
 Group:    Applications/Multimedia
 Url:      https://www.videolan.org/developers/x264.html
-# git branches https://repo.or.cz/x264.git/refs
 Source0:  https://code.videolan.org/videolan/x264/-/archive/%{commit0}/x264-%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 BuildRequires:  nasm
 BuildRequires:  pkg-config
