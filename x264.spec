@@ -18,8 +18,8 @@ BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRequires:  bc 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Provides:       %{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
@@ -55,7 +55,7 @@ for all other file types.
 Summary: Library for encoding H264/AVC video streams
 Group: Development/Libraries
 Provides:	%{name}-libs = %{version}-%{release}
-Provides:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:	%{name}-libs = %{version}-%{release}
 
 %description libs
 x264 is a free library for encoding H264/AVC video streams, written from
@@ -64,10 +64,10 @@ scratch.
 %package dev
 Summary:     Libraries and include file for the %{name} encoder
 Group:       Development/Libraries
-Requires:	 %{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	 %{name}-libs = %{version}-%{release}
 Requires: 	 pkg-config
 Provides:    x264-dev = %{version}-%{release}
-Provides:	 x264-dev = %{epoch}:%{version}-%{release}
+Provides:	 x264-dev = %{version}-%{release}
 Obsoletes:   x264-dev < %{version}
 
 %description dev
@@ -96,7 +96,6 @@ fi
 
 %build
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1616767618
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
