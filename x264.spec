@@ -1,4 +1,4 @@
-%global api 163
+%global api 164
 %global gitdate 20210613
 %global commit0 ae03d92b52bb7581df2e75d571989cb1ecd19cbd
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
