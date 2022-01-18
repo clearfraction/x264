@@ -1,6 +1,6 @@
 %global api 164
-%global gitdate 20210613
-%global commit0 ae03d92b52bb7581df2e75d571989cb1ecd19cbd
+%global gitdate 20211220
+%global commit0 19856cc41ad11e434549fb3cc6a019e645ce1efe
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
