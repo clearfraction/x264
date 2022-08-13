@@ -1,13 +1,11 @@
 %global api 164
-%global gitdate 20211220
-%global commit0 19856cc41ad11e434549fb3cc6a019e645ce1efe
+%global gitdate 20220602
+%global commit0 baee400fa9ced6f5481a728138fed6e867b0ff7f
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gver .git%{shortcommit0}
-
 
 Name:     x264
 Version:  0.%{api}
-Release:  %{?gver}
+Release:  %{gitdate}
 Summary:  A free h264/avc encoder - encoder binary
 License:  GPLv2
 Group:    Applications/Multimedia
@@ -17,9 +15,8 @@ BuildRequires:  nasm
 BuildRequires:  pkg-config
 BuildRequires:  yasm
 BuildRequires:  bc 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Provides:       %{name} = %{version}-%{release}
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	    %{name}-libs = %{version}-%{release}
 
 %description
 x264 is a free library for encoding next-generation H264/AVC video
@@ -30,26 +27,6 @@ Alex Wright. It is released under the terms of the GPL license. This
 package contains a shared library and a commandline tool for encoding
 H264 streams. This library is needed for mplayer/mencoder for H264
 encoding support.
-
-Encoder features:
-- CAVLC/CABAC
-- Multi-references
-- Intra: all macroblock types (16x16, 8x8, and 4x4 with all predictions)
-- Inter P: all partitions (from 16x16 down to 4x4)
-- Inter B: partitions from 16x16 down to 8x8 (including skip/direct)
-- Ratecontrol: constant quantizer, single or multipass ABR, optional VBV
-- Scene cut detection
-- Adaptive B-frame placement
-- B-frames as references / arbitrary frame order
-- 8x8 and 4x4 adaptive spatial transform
-- Lossless mode
-- Custom quantization matrices
-- Parallel encoding of multiple slices (currently disabled)
-
-Be aware that the x264 library is still in early development stage. The
-command line tool x264 can handle only raw YUV 4:2:0 streams at the
-moment so please use mencoder or another tool that supports x264 library
-for all other file types.
 
 %package libs
 Summary: Library for encoding H264/AVC video streams
@@ -81,7 +58,7 @@ development with libx264. This library is needed to build
 mplayer/mencoder with H264 encoding support.
 
 %prep
-%setup -n x264-%{commit0}
+%setup -q -n %{name}-%{commit0}
 
 apiversion=$( grep '#define X264_BUILD' x264.h | cut -d' ' -f3 | sed 's/./0.&/1')   
 echo "You are using $apiversion of x264"
@@ -104,30 +81,31 @@ export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=a
 export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-%configure --enable-shared
-make
+%configure --enable-shared --enable-asm --bit-depth=all
+make %{?_smp_mflags}
 
 %install
-make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-cli
-install -dm 755 %{buildroot}/%{_libdir}
-make -C %{_builddir}/%{name}-%{commit0} DESTDIR=%{buildroot} install-lib-shared %{?_smp_mflags}
+%make_install
 
 
 %post -p /sbin/ldconfig
-
 %postun -p /sbin/ldconfig
+
+
 %files
-%{_bindir}/x264
+%defattr(-,root,root,-)
+/usr/bin/x264
 
 %files libs
-%{_libdir}/libx264.so.%{api}
+%defattr(-,root,root,-)
+/usr/lib64/libx264.so.*
 
 %files dev
-%defattr(0644,root,root)
-%{_includedir}/x264.h
-%{_includedir}/x264_config.h
-%{_libdir}/pkgconfig/x264.pc
-%{_libdir}/libx264.so
+%defattr(-,root,root,-)
+/usr/include/x264.h
+/usr/include/x264_config.h
+/usr/lib64/pkgconfig/x264.pc
+/usr/lib64/libx264.so
 
 %changelog
 # based on https://github.com/UnitedRPMs/x264
