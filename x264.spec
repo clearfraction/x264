@@ -4,7 +4,7 @@
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:     x264
-Version:  0.%{api}
+Version:  %{commit0}
 Release:  %{gitdate}
 Summary:  A free h264/avc encoder - encoder binary
 License:  GPLv2
