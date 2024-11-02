@@ -60,16 +60,6 @@ mplayer/mencoder with H264 encoding support.
 %prep
 %setup -q -n %{name}-%{commit0}
 
-apiversion=$( grep '#define X264_BUILD' x264.h | cut -d' ' -f3 | sed 's/./0.&/1')   
-echo "You are using $apiversion of x264"
-
-_output=`echo "$apiversion != %{version}" | bc`
-if [[ $_output == "1" ]]; then
-   echo "api version is not equal to %{version}"
-exit 1
-else
-   echo "api version is equal to %{version}"
-fi
 
 %build
 export LANG=C.UTF-8
