@@ -1,6 +1,6 @@
 %global api 164
-%global gitdate 20240305
-%global commit0 7ed753b10a61d0be95f683289dfb925b800b0676
+%global gitdate 20241022
+%global commit0 da14df5535fd46776fb1c9da3130973295c87aca
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:     x264
